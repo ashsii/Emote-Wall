@@ -179,12 +179,12 @@ async function getEmotes(check) {
 let currentStreak = { streak: 1, emote: null, emoteURL: null }; // the current emote streak being used in chat
 let currentEmote; // the current emote being used in chat
 let showEmoteCooldownRef = new Date(); // the emote shown from using the !showemote <emote> command
-let minStreak = getUrlParam("minStreak", 5) > 2 ? getUrlParam("minStreak", 5) : 5; // minimum emote streak to trigger overlay effects (Minimum value allowed is 3)
-let streakEnabled = getUrlParam("streakEnabled", 1); // allows user to enable/disable the streak module
+let minStreak = getUrlParam("minStreak", 50) > 2 ? getUrlParam("minStreak", 50) : 50; // minimum emote streak to trigger overlay effects (Minimum value allowed is 3)
+let streakEnabled = getUrlParam("streakEnabled", 0); // allows user to enable/disable the streak module
 let showEmoteEnabled = getUrlParam("showEmoteEnabled", 1); // allows user to enable/disable the showEmote module
 let showEmoteSizeMultiplier = getUrlParam("showEmoteSizeMultiplier", 1); // allows user to change the showEmote emote size multipler
-let sevenTVEnabled = getUrlParam("7tv", 0); // enables or disables support for 7tv.app emotes (only loads in channel emotes, not global)
-let showEmoteCooldown = getUrlParam("showEmoteCooldown", 6); // enables or disables support for 7tv.app emotes (only loads in channel emotes, not global)
+let sevenTVEnabled = getUrlParam("7tv", 1); // enables or disables support for 7tv.app emotes (only loads in channel emotes, not global)
+let showEmoteCooldown = getUrlParam("showEmoteCooldown", 0); // enables or disables support for 7tv.app emotes (only loads in channel emotes, not global)
 log(`The streak module is ${streakEnabled} and the showEmote module is ${showEmoteEnabled}`);
 let streakCD = new Date().getTime();
 
@@ -415,9 +415,10 @@ function connect() {
         if (messageFull.length > 12) {
             let messageBefore = messageFull[messageFull.length - 1].split(`${channel} :`).pop(); // gets the raw message
             let message = messageBefore.split(" ").includes("ACTION") ? messageBefore.split("ACTION ").pop().split("")[0] : messageBefore; // checks for the /me ACTION usage and gets the specific message
-//            if (message.toLowerCase().startsWith("!showemote") || message.toLowerCase().startsWith("!#showemote")) {
-                showEmote(message, messageFull);
-//            }
+            if (message.toLowerCase().startsWith("!refreshoverlay") || message.toLowerCase().startsWith("New 7tv Emote")) {
+				getEmotes();
+            }
+            showEmote(message, messageFull);
             findEmotes(message, messageFull);
         }
         if (messageFull.length == 1 && messageFull[0].startsWith("PING")) {
