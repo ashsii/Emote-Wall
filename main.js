@@ -259,18 +259,48 @@ function showEmote(message, messageFull) {
     if (emotes.length !== 0 && showEmoteEnabled == 1) {
         let emoteUsedPos = messageFull[4].startsWith("emotes=") ? 4 : 5;
         let emoteUsedID = messageFull[emoteUsedPos].split("emotes=").pop();
+		// console.log(messageFull);
+		console.log(emoteUsedID);
         messageSplit = message.split(" ");
-        if (emoteUsedID.length == 0) {
-            let emoteUsed = findEmoteInMessage(messageSplit);
-            let emoteLink = findEmoteURLInEmotes(emoteUsed);
-            if (emoteLink) {
-                return showEmoteEvent({ emoteName: emoteUsed, emoteURL: emoteLink });
+        //if (emoteUsedID.length == 0) {
+        //    let emoteUsed = findEmoteInMessage(messageSplit);
+        //    let emoteLink = findEmoteURLInEmotes(emoteUsed);
+        //    if (emoteLink) {
+        //        return showEmoteEvent({ emoteName: emoteUsed, emoteURL: emoteLink });
+        //    }
+        //} else {
+        //    let emoteUsed = message.substring(parseInt(emoteUsedID.split(":")[1].split("-")[0]), parseInt(emoteUsedID.split(":")[1].split("-")[1]) + 1);
+        //    let emoteLink = `https://static-cdn.jtvnw.net/emoticons/v2/${emoteUsedID.split(":")[0]}/default/dark/2.0`;
+        //    return showEmoteEvent({ emoteName: emoteUsed, emoteURL: emoteLink });
+        //}
+		for (const emote of emotes.map((a) => a.emoteName)) {
+            if (messageSplit.includes(emote)) {
+                for (const emoteObj of emotes) {
+					if (emoteObj.emoteName == emote) {
+						showEmoteEvent({ emoteName: emote, emoteURL: emoteObj.emoteURL });
+					}
+				}
             }
-        } else {
-            let emoteUsed = message.substring(parseInt(emoteUsedID.split(":")[1].split("-")[0]), parseInt(emoteUsedID.split(":")[1].split("-")[1]) + 1);
-            let emoteLink = `https://static-cdn.jtvnw.net/emoticons/v2/${emoteUsedID.split(":")[0]}/default/dark/2.0`;
-            return showEmoteEvent({ emoteName: emoteUsed, emoteURL: emoteLink });
         }
+		emoteUsedIDSplit = emoteUsedID.split("/");
+		console.log(emoteUsedIDSplit);
+		if (emoteUsedID.length != 0) {
+			for (let i = 0; i < emoteUsedIDSplit.length; i++) {
+				let emoteUsed = message.substring(parseInt(emoteUsedIDSplit[i].split(":")[1].split("-")[0]), parseInt(emoteUsedIDSplit[i].split(":")[1].split("-")[1]) + 1);
+				let emoteLink = `https://static-cdn.jtvnw.net/emoticons/v2/${emoteUsedIDSplit[i].split(":")[0]}/default/dark/2.0`;
+				showEmoteEvent({ emoteName: emoteUsed, emoteURL: emoteLink });
+			}
+			// let emoteUsed = message.substring(parseInt(emoteUsedID.split(":")[1].split("-")[0]), parseInt(emoteUsedID.split(":")[1].split("-")[1]) + 1);
+			// console.log(emoteUsed);
+            // let emoteLink = `https://static-cdn.jtvnw.net/emoticons/v2/${emoteUsedID.split(":")[0]}/default/dark/2.0`;
+			// console.log(emoteLink);
+			// showEmoteEvent({ emoteName: emoteUsed, emoteURL: emoteLink });
+        }
+		// showEmoteEvent({ emoteName: "hello", emoteURL: "https://static-cdn.jtvnw.net/emoticons/v2/304202384/default/dark/3.0" });
+		return null
+		
+		
+		
         function findEmoteInMessage(message) {
             for (const emote of emotes.map((a) => a.emoteName)) {
                 if (message.includes(emote)) {
@@ -291,13 +321,13 @@ function showEmote(message, messageFull) {
 }
 
 function showEmoteEvent(emote) {
-    let secondsDiff = (new Date().getTime() - new Date(showEmoteCooldownRef).getTime()) / 1000;
-    log(secondsDiff);
-    if (secondsDiff > parseInt(showEmoteCooldown)) {
+    // let secondsDiff = (new Date().getTime() - new Date(showEmoteCooldownRef).getTime()) / 1000;
+    // log(secondsDiff);
+    // if (secondsDiff > parseInt(showEmoteCooldown)) {
         showEmoteCooldownRef = new Date();
         var image = emote.emoteURL;
-        var max_height = 720;
-        var max_width = 1280;
+        var max_height = 1080;
+        var max_width = 1920;
         function getRandomCoords() {
             var r = [];
             var x = Math.floor(Math.random() * max_width);
@@ -306,25 +336,54 @@ function showEmoteEvent(emote) {
             r = [x, y];
             return r;
         }
+		function moveRandom(obj) {
+			let window_Height = window.innerHeight;
+			let window_Width = window.innerWidth;
+
+			let availSpace_V = window_Height - 256;
+			let availSpace_H = window_Width - 256;
+
+			var randNum_V = Math.round(Math.random() * availSpace_V);
+			var randNum_H = Math.round(Math.random() * availSpace_H);
+
+			obj.style.top = randNum_V + "px";
+			obj.style.left = randNum_H + "px";
+		}
+
         function createImage() {
-            $("#showEmote").empty();
+            //$("#showEmote").empty();
             var xy = getRandomCoords();
             $("#showEmote").css("position", "absolute");
-            $("#showEmote").css("top", xy[1] + "px");
-            $("#showEmote").css("left", xy[0] + "px");
+            //$("#showEmote").css("top", xy[1] + "px");
+            //$("#showEmote").css("left", xy[0] + "px");
+            $("#showEmote").css("top", 0 + "px");
+            $("#showEmote").css("left", 0 + "px");
             log("creating showEmote");
-            var img = $("<img />", { src: image, style: `transform: scale(${showEmoteSizeMultiplier}, ${showEmoteSizeMultiplier})` });
-            img.appendTo("#showEmote");
-            gsap.to("#showEmote", 1, { autoAlpha: 1, onComplete: anim2 });
-            function anim2() {
-                gsap.to("#showEmote", 1, { autoAlpha: 0, delay: 4, onComplete: remove });
-            }
-            function remove() {
-                $("#showEmote").empty();
-            }
+            // var img = $("<img />", { src: image, style: `transform: scale(${showEmoteSizeMultiplier}, ${showEmoteSizeMultiplier})` });
+			const img = document.createElement("img");
+			img.src = image;
+			img.style.display = "block";
+			img.style.position = "fixed";
+			img.classList.add("emote");
+			img.classList.add("fade-in");
+			
+			moveRandom(img);
+			document.getElementById("showEmote").appendChild(img);
+			
+			setTimeout(() => {
+				document.getElementById("showEmote").removeChild(img);
+			}, 1000 * 5);
+			// img.appendTo("#showEmote");
+            //gsap.to("#showEmote", 1, { autoAlpha: 1, onComplete: anim2 });
+            //function anim2() {
+            //    gsap.to("#showEmote", 1, { autoAlpha: 0, delay: 4, onComplete: remove });
+            //}
+            //function remove() {
+            //    $("#showEmote").empty();
+            //}
         }
         createImage();
-    }
+    // }
 }
 
 // Connecting to twitch chat
@@ -356,9 +415,9 @@ function connect() {
         if (messageFull.length > 12) {
             let messageBefore = messageFull[messageFull.length - 1].split(`${channel} :`).pop(); // gets the raw message
             let message = messageBefore.split(" ").includes("ACTION") ? messageBefore.split("ACTION ").pop().split("")[0] : messageBefore; // checks for the /me ACTION usage and gets the specific message
-            if (message.toLowerCase().startsWith("!showemote") || message.toLowerCase().startsWith("!#showemote")) {
+//            if (message.toLowerCase().startsWith("!showemote") || message.toLowerCase().startsWith("!#showemote")) {
                 showEmote(message, messageFull);
-            }
+//            }
             findEmotes(message, messageFull);
         }
         if (messageFull.length == 1 && messageFull[0].startsWith("PING")) {
