@@ -7,6 +7,8 @@ The emotes are taken from Twitch, FFZ, BTTV, and optionally, 7TV.
 
 This project took direct inspiration from pajlada's pajbot, although I believe my version is easier to setup and use.
 
+https://ashsii.github.io/Emote-Wall/?channel=ashsii
+
 # Example + Live Version
 
 ## Emote Combo:
