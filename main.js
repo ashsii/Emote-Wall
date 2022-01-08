@@ -260,7 +260,7 @@ function showEmote(message, messageFull) {
         let emoteUsedPos = messageFull[4].startsWith("emotes=") ? 4 : 5;
         let emoteUsedID = messageFull[emoteUsedPos].split("emotes=").pop();
 		// console.log(messageFull);
-		console.log(emoteUsedID);
+		// console.log(emoteUsedID);
         messageSplit = message.split(" ");
         //if (emoteUsedID.length == 0) {
         //    let emoteUsed = findEmoteInMessage(messageSplit);
@@ -283,7 +283,7 @@ function showEmote(message, messageFull) {
             }
         }
 		emoteUsedIDSplit = emoteUsedID.split("/");
-		console.log(emoteUsedIDSplit);
+		// console.log(emoteUsedIDSplit);
 		if (emoteUsedID.length != 0) {
 			for (let i = 0; i < emoteUsedIDSplit.length; i++) {
 				let emoteUsed = message.substring(parseInt(emoteUsedIDSplit[i].split(":")[1].split("-")[0]), parseInt(emoteUsedIDSplit[i].split(":")[1].split("-")[1]) + 1);
