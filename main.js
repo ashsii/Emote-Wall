@@ -185,6 +185,7 @@ let showEmoteEnabled = getUrlParam("showEmoteEnabled", 1); // allows user to ena
 let showEmoteSizeMultiplier = getUrlParam("showEmoteSizeMultiplier", 1); // allows user to change the showEmote emote size multipler
 let sevenTVEnabled = getUrlParam("7tv", 1); // enables or disables support for 7tv.app emotes (only loads in channel emotes, not global)
 let showEmoteCooldown = getUrlParam("showEmoteCooldown", 0); // enables or disables support for 7tv.app emotes (only loads in channel emotes, not global)
+let showDuplicates = getUrlParam("showDuplicates", 0);
 log(`The streak module is ${streakEnabled} and the showEmote module is ${showEmoteEnabled}`);
 let streakCD = new Date().getTime();
 
@@ -277,7 +278,13 @@ function showEmote(message, messageFull) {
             if (messageSplit.includes(emote)) {
                 for (const emoteObj of emotes) {
 					if (emoteObj.emoteName == emote) {
-						showEmoteEvent({ emoteName: emote, emoteURL: emoteObj.emoteURL });
+						if (showDuplicates == 1) {
+							for ( let x = 0; x < message.split(emote).length - 1; x++) {
+								showEmoteEvent({ emoteName: emote, emoteURL: emoteObj.emoteURL });
+							}
+						} else {
+							showEmoteEvent({ emoteName: emote, emoteURL: emoteObj.emoteURL });
+						}	
 					}
 				}
             }
@@ -288,11 +295,18 @@ function showEmote(message, messageFull) {
 			for (let i = 0; i < emoteUsedIDSplit.length; i++) {
 				let emoteUsed = message.substring(parseInt(emoteUsedIDSplit[i].split(":")[1].split("-")[0]), parseInt(emoteUsedIDSplit[i].split(":")[1].split("-")[1]) + 1);
 				let emoteLink = `https://static-cdn.jtvnw.net/emoticons/v2/${emoteUsedIDSplit[i].split(":")[0]}/default/dark/2.0`;
-				showEmoteEvent({ emoteName: emoteUsed, emoteURL: emoteLink });
+				// showEmoteEvent({ emoteName: emoteUsed, emoteURL: emoteLink });
+				if (showDuplicates == 1) {
+					for ( let x = 0; x < message.split(emoteUsed).length - 1; x++) {
+						showEmoteEvent({ emoteName: emoteUsed, emoteURL: emoteLink });
+					}
+				} else {
+					showEmoteEvent({ emoteName: emoteUsed, emoteURL: emoteLink });
+				}	
 			}
 			// let emoteUsed = message.substring(parseInt(emoteUsedID.split(":")[1].split("-")[0]), parseInt(emoteUsedID.split(":")[1].split("-")[1]) + 1);
-			// console.log(emoteUsed);
-            // let emoteLink = `https://static-cdn.jtvnw.net/emoticons/v2/${emoteUsedID.split(":")[0]}/default/dark/2.0`;
+            // console.log(emoteUsed);
+			// let emoteLink = `https://static-cdn.jtvnw.net/emoticons/v2/${emoteUsedID.split(":")[0]}/default/dark/2.0`;
 			// console.log(emoteLink);
 			// showEmoteEvent({ emoteName: emoteUsed, emoteURL: emoteLink });
         }
@@ -340,8 +354,8 @@ function showEmoteEvent(emote) {
 			let window_Height = window.innerHeight;
 			let window_Width = window.innerWidth;
 
-			let availSpace_V = window_Height - 256;
-			let availSpace_H = window_Width - 256;
+			let availSpace_V = window_Height - 90;
+			let availSpace_H = window_Width - 90;
 
 			var randNum_V = Math.round(Math.random() * availSpace_V);
 			var randNum_H = Math.round(Math.random() * availSpace_H);
@@ -415,7 +429,8 @@ function connect() {
         if (messageFull.length > 12) {
             let messageBefore = messageFull[messageFull.length - 1].split(`${channel} :`).pop(); // gets the raw message
             let message = messageBefore.split(" ").includes("ACTION") ? messageBefore.split("ACTION ").pop().split("")[0] : messageBefore; // checks for the /me ACTION usage and gets the specific message
-            if (message.toLowerCase().startsWith("!refreshoverlay") || message.toLowerCase().startsWith("New 7TV emote")) {
+            // console.log(message)
+			if (message.toLowerCase().startsWith("!refreshoverlay") || message.toLowerCase().startsWith("new 7tv emote")) {
 				window.location.reload();
             }
             showEmote(message, messageFull);
