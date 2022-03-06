@@ -3,9 +3,9 @@
 ~~This project is a webpage that shows emote streaks on the bottom left of the page. **_(Page dimensions are 1280px x 720px)_**  
 It can also show emotes randomly on screen if a chatter does !showemote (emote*name)  
 \_This overlay can be used in streaming software like OBS*
-The emotes are taken from Twitch, FFZ, BTTV, and optionally, 7TV.
+The emotes are taken from Twitch, FFZ, BTTV, and optionally, 7TV.~~
 
-~~This project took direct inspiration from pajlada's pajbot, although I believe my version is easier to setup and use. 
+~~This project took direct inspiration from pajlada's pajbot, although I believe my version is easier to setup and use. ~~
 
 Edited emote overlay to show all emotes when typed in your chat. Change the channel after ?channel= to get yours working and add as browser source in OBS.
 
