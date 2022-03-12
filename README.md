@@ -11,26 +11,26 @@ Edited emote overlay to show all emotes when typed in your chat. Change the chan
 
 https://ashsii.github.io/Emote-Wall/?channel=ashsii&showDuplicates=1
 
-# Example + Live Version
+~~# Example + Live Version~~
 
-## Emote Combo:
+~~## Emote Combo:~~
 
 ![Emote Combo](https://i.imgur.com/gOETm6Z.gif)
 
-## Show Emote:
+~~## Show Emote:~~
 
 ![Show Emote](https://i.imgur.com/987NJzD.gif)
 
-## Live Version:
+~~## Live Version:~~
 
-(You can put this URL into your streaming software and use it!):
+~~(You can put this URL into your streaming software and use it!):~~
 
-https://api.roaringiron.com/emoteoverlay?channel=forsen
+~~https://api.roaringiron.com/emoteoverlay?channel=forsen~~
 
-# Available Parameters:
+~~# Available Parameters:~~
 
-To use these parameters, add them after the url with this format: "&(parameter)=(value)"
-For example, if I wanted to add the "minStreak" and the "7tv" parameter, my new URL would be "https://api.roaringiron.com/emoteoverlay?channel=forsen&minStreak=10&7tv=1"
+~~To use these parameters, add them after the url with this format: "&(parameter)=(value)"
+For example, if I wanted to add the "minStreak" and the "7tv" parameter, my new URL would be "https://api.roaringiron.com/emoteoverlay?channel=forsen&minStreak=10&7tv=1"~~
 
 -   channel=(channel name) **_REQUIRED_**
 -   minStreak=(minimum emote streak needed to show up in overlay) _OPTIONAL - Defaults to 5 - Minimum value allowed is 3_
